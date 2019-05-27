@@ -5,7 +5,7 @@ import re
 import json
 import shutil
 import time
-import lib.instagram_scraper.instagram_scraper as insta
+import instagram_scraper as insta
 
 with open('config.json', 'r') as f:
     config = json.load(f)
