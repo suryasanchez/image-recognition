@@ -4,15 +4,17 @@ import requests
 import re
 import json
 import shutil
-from subprocess import call
 import time
 import instagram_scraper as insta
 
-S3bucket='bucket'
+with open('config.json', 'r') as f:
+    config = json.load(f)
 
-insta_profiles = ["profile"]
-number_last_photos = 1 # put 0 to select all
-number_hashtags = 5
+S3bucket=config['CONFIG']['S3BUCKET']
+
+insta_profiles = [config['CONFIG']['INSTA_PROFILES']]
+number_last_photos = config['VARIABLES']['NB_LAST_PHOTOS']
+number_hashtags = config['VARIABLES']['NB_HASHTAGS']
 
 #scrape meta data from n last media from insta profiles
 def scraper():
@@ -34,13 +36,13 @@ path_to_json = insta_profiles[0] + '/' + insta_profiles[0] + '.json'
 list_url_photos = []
 
 # read json file and create a list with the urls
-with open(path_to_json) as json_file:  
-    data = json.load(json_file)
-    for i in range(len(data)):
-        list_url_photos.append(data[i]['display_url'])
+# with open(path_to_json) as json_file:  
+#     data = json.load(json_file)
+#     for i in range(len(data)):
+#         list_url_photos.append(data[i]['display_url'])
 
 # comment the line below to choose image from instagram profile
-#list_url_photos = ["https://upload.wikimedia.org/wikipedia/commons/3/32/House_sparrow04.jpg"]
+list_url_photos = [config['CONFIG']['URL_PHOTO']]
 
 # import the image to S3
 # Uses the creds in ~/.aws/credentials
@@ -61,7 +63,7 @@ list_name_photos = []
 
 for i in range(len(list_url_photos)):
     url = list_url_photos[i]
-    s3_image_filename = re.findall(r'[^.\/]+\.jpg|\.png', url)[0] #extract the name of the image from the url
+    s3_image_filename = re.findall(r'[0-9A-Za-z]+(\.jpg|\.png|\.jpeg|\.JPG|\.JPEG|\.PNG)', url)[0] #extract the name of the image from the url
     list_name_photos.append(s3_image_filename)
 
     # Given an Internet-accessible URL, download the image and upload it to S3,
@@ -102,7 +104,7 @@ if __name__ == "__main__":
         labels_photo = {}
         photo = list_name_photos[i]
         response = client.detect_labels(Image={'S3Object':{'Bucket':S3bucket,'Name':photo}},
-            MaxLabels=10, MinConfidence=60)
+            MaxLabels=10, MinConfidence=70)
     
         print ("----------")
         print ()

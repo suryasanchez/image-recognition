@@ -1,0 +1,11 @@
+{
+  "CONFIG": {
+    "S3BUCKET": "...",
+    "INSTA_PROFILES": "...",
+    "URL_PHOTO": "https://....png"    
+  },
+  "VARIABLES": {
+    "NB_LAST_PHOTOS": "0 is for all photos",
+    "NB_HASHTAGS": 20
+  }
+}

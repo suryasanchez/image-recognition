@@ -1,5 +1,7 @@
 import requests
 
+keywords = ["cat", "tree"]
+
 def getHashtag(keyword):
 	# https://d212rkvo8t62el.cloudfront.net/tag/
 	r = requests.get('https://query.displaypurposes.com/tag/' + keyword)
@@ -17,8 +19,6 @@ def getHashtag(keyword):
 		else: break
 
 	return list_hashtag
-
-keywords = ["cat", "tree"]
 
 for keyword in range(len(keywords)):
 	print("Hashtags seach for " + keywords[keyword])
