@@ -1,0 +1,3 @@
+[submodule "lib/instagram-scraper"]
+	path = lib/instagram-scraper
+	url = https://github.com/rarcega/instagram-scraper.git
